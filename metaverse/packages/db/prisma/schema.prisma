@@ -20,6 +20,7 @@ model User {
   avatarId String?
   role     Role
   spaces   space[]
+  avatar   Avatar   @relation(fields: [avatarId],references: [id])
 }
 
 model Space {
@@ -44,31 +45,37 @@ model spaceElements {
 }
 
 model Element {
-  id       String @id @unique @default(cuid())
-  width    Int
-  height   Int
-  imageUrl String
+  id             String @id @unique @default(cuid())
+  width          Int
+  height         Int
+  imageUrl       String
+  spaces         spaceElements[]
+  mapElements    MapElements[]
 }
 
 model Map {
-  id     String  @id @unique @default(cuid())
-  width  Int
-  height Int
-  name   String
+  id          String  @id @unique @default(cuid())
+  width       Int
+  height      Int
+  name        String
+  mapElements MapElements[]
 }
 
-model mapElements {
+model MapElements {
   id        String  @id @unique @default(cuid())
   mapId     String
-  elementId String?
+  elementId String
   x         Int?
   y         Int?
+  map       Map   @relation{fields: [mapId], references: [id]}
+  element   Element @relation{fields: [elementId],references: [id]}
 }
 
 model Avatar {
   id       String  @id @unique @default(cuid())
   imageUrl String?
   name     String?
+  users    User[]
 }
 
 enum Role {
