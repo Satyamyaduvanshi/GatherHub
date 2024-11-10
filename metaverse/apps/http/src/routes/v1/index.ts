@@ -19,14 +19,13 @@ router.post("/signup",async(req,res)=>{
         })
         return
     }
-    const {email,password,type} = parsedData.data
 
     try {
         await client.user.create({
             data:{
-                username: parsedData.data.username,
+                username: parsedData.data.email,
                 password: parsedData.data.password,
-                type: parsedData.data.type === "admin" ? "admin" : "user",
+                role: parsedData.data.role === "admin" ? "Admin" : "User",
             }
         })
         
